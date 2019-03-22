@@ -1,0 +1,15 @@
+<fieldset class="col-md-12 mb-2 mt-2">    	
+        <div class="panel panel-default">
+            <div class="panel-body" class="text-left"> 
+                <i  style="cursor: pointer;" (click) = "deleleBook(book)" class="fa fa-trash float-right button-delete"  aria-hidden="true" matTooltip="Delete book"></i>
+                    <strong>Title</strong>
+                        <mat-card-subtitle class="ml-4 text-capitalize font-weight-bold">
+                                 {{book.title}} ({{book.category}}) 
+                        </mat-card-subtitle>   
+                        <hr>
+                        
+                    <strong>Description</strong>
+                        <mat-card-subtitle class="ml-4"> {{book.description}}</mat-card-subtitle>                
+            </div>
+        </div>
+</fieldset>	

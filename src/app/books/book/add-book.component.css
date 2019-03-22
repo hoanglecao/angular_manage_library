@@ -1,0 +1,16 @@
+
+  .full-width {
+    width: 100%;
+  }
+  .add-book-card {
+    margin-left: 25rem;
+    margin-top: 1rem;
+    width: 32rem;
+  }
+  .control {
+    padding: 0.5em 0 0.5em 0 !important;
+  }
+  
+  .add-button {
+    margin-left: 87%;
+  }
