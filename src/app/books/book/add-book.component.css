@@ -3,14 +3,10 @@
     width: 100%;
   }
   .add-book-card {
-    margin-left: 25rem;
-    margin-top: 1rem;
-    width: 32rem;
+    margin-left: 37%;
+    margin-top: 0.1%;
+    width: 35%;
   }
   .control {
     padding: 0.5em 0 0.5em 0 !important;
-  }
-  
-  .add-button {
-    margin-left: 87%;
   }

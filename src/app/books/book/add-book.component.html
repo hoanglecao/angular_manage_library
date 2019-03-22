@@ -8,7 +8,7 @@
         <form [formGroup]="addBookForm" #addBookformGroup="ngForm" (ngSubmit)="onSubmit(addBookformGroup)">
             <!--Title-->          
             <mat-form-field class="full-width" appearance="outline" >
-              <mat-label>Title </mat-label>
+              <mat-label>Title * </mat-label>
               <input matInput formControlName ="title" >
                 <!--Validation-->    
                 <mat-error *ngIf="addBookForm.get('title').errors?.required ||
@@ -39,7 +39,7 @@
         
            <!--Desciption-->
             <mat-form-field  class="full-width" appearance="outline">
-                <mat-label>Description</mat-label>
+                <mat-label>Description *</mat-label>
                 <textarea matInput formControlName="description"
                           cdkTextareaAutosize
                           #autosize="cdkTextareaAutosize"
@@ -52,8 +52,8 @@
                 </mat-error>    
             </mat-form-field>
          
-           <div class="add-button">
-            <button  type="submit" mat-raised-button color="primary" [disabled]="addBookForm.status === 'INVALID'" class="mr-5">Add</button>
+           <div>
+            <button  type="submit" mat-raised-button color="primary" [disabled]="addBookForm.status === 'INVALID'" >Add</button>
           </div>
           </form>
     </mat-card-content>
