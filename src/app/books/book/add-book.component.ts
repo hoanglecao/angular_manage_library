@@ -2,8 +2,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormGroupDirective} from '@angular/forms';
 import { NoWhitespaceValidator} from 'src/app/shared/custom-validators/no-whitespace-validator';
-
+import { ControlErrorStateMatcher} from 'src/app/shared/errors/error-state-matcher';
 import { Book } from 'src/app/shared/models/books/book';
+
+
 
 @Component({
     selector: 'add-book',
@@ -14,7 +16,7 @@ import { Book } from 'src/app/shared/models/books/book';
 export class AddBookComponent implements OnInit {
     book : Book
     addBookForm: FormGroup;
-
+    matcher = new ControlErrorStateMatcher();
     ngOnInit(){
         this.createForm();
     }
@@ -25,12 +27,10 @@ export class AddBookComponent implements OnInit {
 
      createForm() {
         this.addBookForm = new FormGroup({
-            title : new FormControl("",Validators.compose([Validators.required,NoWhitespaceValidator, Validators.maxLength(30)])),
-            category: new FormControl("", Validators.required),
-            description: new FormControl("", Validators.compose([Validators.required,NoWhitespaceValidator]))
-        })
+            title : new FormControl('',Validators.compose([Validators.required,NoWhitespaceValidator, Validators.maxLength(30)])),
+            category: new FormControl('', Validators.required),
+            description: new FormControl('', Validators.compose([Validators.required,NoWhitespaceValidator]))
+        });
     };
-
-
 }
 

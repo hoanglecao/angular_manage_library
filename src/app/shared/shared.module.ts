@@ -8,6 +8,7 @@ import { MatFormFieldModule,
          MatCardModule ,
          MatBadgeModule,
          MatTooltipModule
+         
         } from '@angular/material';
 
 import { TrimPipe }  from 'src/app/shared/custom-pipes/trim-pipe';
@@ -25,6 +26,7 @@ import { TrimPipe }  from 'src/app/shared/custom-pipes/trim-pipe';
                 MatBadgeModule,
                 MatTooltipModule
             ],
+           
     declarations:[TrimPipe],
     exports: [
                 ReactiveFormsModule,

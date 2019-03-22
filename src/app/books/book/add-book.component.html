@@ -9,16 +9,18 @@
             <!--Title-->          
             <mat-form-field class="full-width" appearance="outline" >
               <mat-label>Title * </mat-label>
-              <input matInput formControlName ="title" >
+              <input matInput formControlName ="title" [errorStateMatcher]="matcher" >
+
                 <!--Validation-->    
                 <mat-error *ngIf="addBookForm.get('title').errors?.required ||
                 addBookForm.get('title').errors?.whitespace">
                     This field is <strong>required</strong>
                 </mat-error>
-                
+                       
                 <mat-error *ngIf="addBookForm.get('title').errors?.maxlength">
-                  This field just allows 30 characters at maximum
-                </mat-error>                     
+                    This field just allows 30 characters at maximum
+                  </mat-error>
+                                
             </mat-form-field>
         
            <!--Category-->
