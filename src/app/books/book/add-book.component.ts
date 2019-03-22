@@ -1,6 +1,7 @@
 
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormGroupDirective} from '@angular/forms';
+import { NoWhitespaceValidator} from 'src/app/shared/custom-validators/no-whitespace-validator';
 
 import { Book } from 'src/app/shared/models/books/book';
 
@@ -17,17 +18,19 @@ export class AddBookComponent implements OnInit {
     ngOnInit(){
         this.createForm();
     }
-    onSubmit(addBookformGroup: FormGroupDirective) {
+    onSubmit(addBookformGroup: FormGroupDirective) {       
         this.book = addBookformGroup.value ;
         addBookformGroup.resetForm();
      }
 
      createForm() {
         this.addBookForm = new FormGroup({
-            title : new FormControl("",Validators.compose([Validators.required, Validators.maxLength(30)])),
+            title : new FormControl("",Validators.compose([Validators.required,NoWhitespaceValidator, Validators.maxLength(30)])),
             category: new FormControl("", Validators.required),
-            description: new FormControl("", Validators.required)
+            description: new FormControl("", Validators.compose([Validators.required,NoWhitespaceValidator]))
         })
     };
+
+
 }
 

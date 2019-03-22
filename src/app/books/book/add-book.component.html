@@ -46,13 +46,14 @@
                           cdkAutosizeMaxRows="10"></textarea>
                  <!--Validation-->
             
-                 <mat-error *ngIf="addBookForm.get('description').errors?.required">
+                 <mat-error *ngIf="addBookForm.get('description').errors?.required ||
+                 addBookForm.get('description').errors?.whitespace">
                     This field is <strong>required</strong>
                 </mat-error>    
             </mat-form-field>
          
            <div>
-            <button  type="submit" mat-raised-button color="primary" [disabled]="addBookForm.status === 'INVALID'" >Add</button>
+            <button  type="submit" mat-raised-button color="primary" [disabled]="addBookForm.status === 'INVALID'">Add</button>
           </div>
           </form>
     </mat-card-content>

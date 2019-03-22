@@ -10,6 +10,8 @@ import { MatFormFieldModule,
          MatTooltipModule
         } from '@angular/material';
 
+import { TrimPipe }  from 'src/app/shared/custom-pipes/trim-pipe';
+
 @NgModule({
 
     imports: [
@@ -23,7 +25,7 @@ import { MatFormFieldModule,
                 MatBadgeModule,
                 MatTooltipModule
             ],
-   
+    declarations:[TrimPipe],
     exports: [
                 ReactiveFormsModule,
                 CommonModule,
@@ -33,7 +35,8 @@ import { MatFormFieldModule,
                 MatButtonModule,
                 MatCardModule,
                 MatBadgeModule,
-                MatTooltipModule
+                MatTooltipModule,
+                TrimPipe
             ]
 
 })
