@@ -17,15 +17,14 @@
                 </mat-error>
                 
                 <mat-error *ngIf="addBookForm.get('title').errors?.maxlength">
-                    The title has more than <strong>30 characters</strong>
+                  This field just allows 30 characters at maximum
                 </mat-error>                     
             </mat-form-field>
         
            <!--Category-->
             <mat-form-field  class="full-width" appearance="outline">
               <mat-label>Category </mat-label>
-              <select matNativeControl required formControlName="category">
-                <option value=""></option>
+              <select matNativeControl required formControlName="category">               
                 <option value="drama">Drama</option>
                 <option value="comedy">Comedy</option>
                 <option value="sport">Sport</option>
