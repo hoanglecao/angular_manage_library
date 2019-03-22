@@ -11,7 +11,7 @@ import { BookService} from '../book.service';
 
 export class BookListComponent implements OnInit, OnChanges {
    @Input() newBook : Book;
-   private books: Book[] = [];
+   books: Book[] = [];
   
    constructor( private bookService: BookService){}
 

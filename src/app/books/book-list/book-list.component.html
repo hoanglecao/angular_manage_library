@@ -4,7 +4,7 @@
                <span matBadge={{books.length}} matBadgeColor="accent" matBadgeOverlap="false"><i class="fa fa-list-alt mr-1" aria-hidden="true"></i>Book List</span>
         </mat-card-title>
     </mat-card-header>    
-    <mat-card-content *ngFor="let book of books; index as i; trackBy: trackByFn">
+    <mat-card-content *ngFor="let book of books; index as i;">
         <book-detail [book] = "book" (deleteBookEvent) ="deleteBookListen($event)"></book-detail>
     </mat-card-content>        
 </mat-card>
