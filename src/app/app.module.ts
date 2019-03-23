@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { BookModule } from './books/book.module';
 
 import { AppComponent } from './app.component';
+import { MatCardModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    BookModule
+    BookModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
