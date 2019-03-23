@@ -11,7 +11,7 @@ import { MatFormFieldModule,
          
         } from '@angular/material';
 
-import { TrimPipe }  from 'src/app/shared/custom-pipes/trim-pipe';
+import { TrimPipe }  from 'src/app/shared/custom-pipes/trim.pipe';
 
 @NgModule({
 

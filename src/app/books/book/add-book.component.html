@@ -12,17 +12,21 @@
               <input matInput formControlName ="title" [errorStateMatcher]="matcher" >
 
                 <!--Validation-->    
-                <mat-error *ngIf="addBookForm.get('title').errors?.required ||
-                addBookForm.get('title').errors?.whitespace">
-                    This field is <strong>required</strong>
+                <mat-error *ngIf="addBookForm.get('title').errors?.required">
+                    This field is <strong>required.</strong>
+                </mat-error>
+                
+                <mat-error *ngIf="addBookForm.get('title').errors?.whitespace && !addBookForm.get('title').errors?.required">
+                    This field does not allow only whitespace.
                 </mat-error>
                        
-                <mat-error *ngIf="addBookForm.get('title').errors?.maxlength">
-                    This field just allows 30 characters at maximum
-                  </mat-error>
+                <mat-error *ngIf="addBookForm.get('title').errors?.maxlength && !addBookForm.get('title').errors?.whitespace">
+                    This field just allows 30 characters at maximum.
+                </mat-error>
                                 
             </mat-form-field>
         
+
            <!--Category-->
             <mat-form-field  class="full-width" appearance="outline">
               <mat-label>Category </mat-label>
@@ -50,7 +54,7 @@
             
                  <mat-error *ngIf="addBookForm.get('description').errors?.required ||
                  addBookForm.get('description').errors?.whitespace">
-                    This field is <strong>required</strong>
+                    This field is <strong>required.</strong>
                 </mat-error>    
             </mat-form-field>
          

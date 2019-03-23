@@ -15,7 +15,7 @@ export class BookListComponent implements OnInit, OnChanges {
   
    constructor( private bookService: BookService){}
 
-   ngOnChanges(changes: SimpleChanges) {
+   ngOnChanges(changes: SimpleChanges) {    
     if (typeof changes['newBook'] !== "undefined") {
         var newBook = changes['newBook'];
         if (!newBook.isFirstChange()) {        
