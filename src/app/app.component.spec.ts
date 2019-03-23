@@ -14,9 +14,9 @@ import { AppComponent } from './app.component';
 import { AddBookComponent} from './books/book/add-book.component';
 import { BookDetailComponent} from './books/book-detail/book-detail.component';
 import { BookListComponent} from './books/book-list/book-list.component';
-import { MockPipe} from '../mock-tests/pipes/mock-trim.pipe';
+import { MockPipe} from './mock_tests/pipes/mock-trim.pipe';
 import { BookService} from '../app/books/book.service';
-import { MockBookService } from '../mock-tests/services/mock-book.service';
+import { MockBookService } from './mock_tests/services/mock-book.service';
 
 describe('AppComponent', () => {
   let appComponent : AppComponent;

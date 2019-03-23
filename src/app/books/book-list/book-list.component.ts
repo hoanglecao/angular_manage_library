@@ -1,6 +1,6 @@
 import { Component , OnInit,OnChanges, Input, SimpleChanges } from '@angular/core';
 import * as _ from "lodash";
-import { Book } from 'src/app/shared/models/books/book';
+import { Book } from '../../shared/models/books/book';
 import { BookService} from '../book.service';
 
 @Component({

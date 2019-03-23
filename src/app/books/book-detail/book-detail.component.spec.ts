@@ -10,8 +10,8 @@ import {  MatFormFieldModule,
     MatTooltipModule } from '@angular/material';
 
 
-import { MockPipe} from '../../../mock-tests/pipes/mock-trim.pipe';
-import { Book } from 'src/app/shared/models/books/book';
+import { MockPipe} from '../../mock_tests/pipes/mock-trim.pipe';
+import { Book } from '../../shared/models/books/book';
 
 describe('BookDetailComponent', () => {
     let bookDetailComponent: BookDetailComponent;

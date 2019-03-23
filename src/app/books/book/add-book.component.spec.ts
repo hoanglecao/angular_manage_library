@@ -12,9 +12,9 @@ import {  MatFormFieldModule,
 import {FormGroupDirective, FormGroup,FormControl,Validators } from '@angular/forms';
 import { BookDetailComponent} from '../book-detail/book-detail.component';
 import { BookListComponent} from '../book-list/book-list.component';
-import { MockPipe} from '../../../mock-tests/pipes/mock-trim.pipe';
+import { MockPipe} from '../../mock_tests/pipes/mock-trim.pipe';
 import { BookService} from '../book.service';
-import { MockBookService } from '../../../mock-tests/services/mock-book.service';
+import { MockBookService } from '../../mock_tests/services/mock-book.service';
 import {NoWhitespaceValidator} from '../../shared/custom-validators/no-whitespace-validator';
 
 describe('AddBookComponent', () => {

@@ -11,8 +11,8 @@ import { MatFormFieldModule,
          
         } from '@angular/material';
 
-import { TrimPipe }  from 'src/app/shared/custom-pipes/trim.pipe';
-import { MockPipe }  from '../../mock-tests/pipes/mock-trim.pipe';
+import { TrimPipe }  from '../shared/custom-pipes/trim.pipe';
+import { MockPipe }  from '../mock_tests/pipes/mock-trim.pipe';
 @NgModule({
 
     imports: [

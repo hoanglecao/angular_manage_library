@@ -1,9 +1,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormGroupDirective} from '@angular/forms';
-import { NoWhitespaceValidator} from 'src/app/shared/custom-validators/no-whitespace-validator';
-import { ControlErrorStateMatcher} from 'src/app/shared/errors/error-state-matcher';
-import { Book } from 'src/app/shared/models/books/book';
+import { NoWhitespaceValidator} from '../../shared/custom-validators/no-whitespace-validator';
+import { ControlErrorStateMatcher} from '../../shared/errors/error-state-matcher';
+import { Book } from '../../shared/models/books/book';
 
 
 
