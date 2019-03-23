@@ -10,6 +10,11 @@ body {
     font-variant: all-small-caps;
     display: contents;
 }
+.card {
+  padding-bottom:0; 
+  padding-top:0.2% ; 
+  background-color: mintcream
+}
 .header-image {
   background-image: url('../assets/images/logo.png');
   background-size: cover;
