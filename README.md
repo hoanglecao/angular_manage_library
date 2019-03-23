@@ -15,7 +15,7 @@ This project was generated with Angular CLI version 7.3.6.
       2.	A ‘Book List’ section. This section displays a list of books that were added.
       
 # Structure app
-![alt text](https://github.com/hoanglecao/images/blob/master/app_structure.png "")
+![alt text](https://github.com/hoanglecao/images/blob/master/app_structure1.png "")
 
 # Technologies
   - Angular 7.2.0
