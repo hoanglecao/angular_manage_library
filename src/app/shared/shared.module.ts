@@ -12,7 +12,7 @@ import { MatFormFieldModule,
         } from '@angular/material';
 
 import { TrimPipe }  from 'src/app/shared/custom-pipes/trim.pipe';
-
+import { MockPipe }  from '../../mock-tests/pipes/mock-trim.pipe';
 @NgModule({
 
     imports: [
@@ -25,9 +25,10 @@ import { TrimPipe }  from 'src/app/shared/custom-pipes/trim.pipe';
                 MatCardModule,
                 MatBadgeModule,
                 MatTooltipModule
+                
             ],
            
-    declarations:[TrimPipe],
+    declarations:[TrimPipe,MockPipe],
     exports: [
                 ReactiveFormsModule,
                 CommonModule,
