@@ -17,6 +17,9 @@ This project was generated with Angular CLI version 7.3.6.
 # Structure app
 ![alt text](https://github.com/hoanglecao/images/blob/master/app_structure1.png "")
 
+# Structure component
+![alt text](https://github.com/hoanglecao/images/blob/master/component-structure.png "")
+
 # Technologies
   - Angular 7.2.0
   - Angular material 7.3.5
