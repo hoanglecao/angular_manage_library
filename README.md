@@ -1,19 +1,19 @@
 # Tarcorp
 This project was generated with Angular CLI version 7.3.6.
 
+# Features
+  - The app has 2 sections:
+      1. 	An ‘Add Book’ section. This section allows the user to enter book details and add them to a book list.
+      2.	A ‘Book List’ section. This section displays a list of books that were added.
 
-  [View Demo](https://hoanglecao.github.io/tarcorp/)
-  
 # Screenshot
 ![alt text](https://github.com/hoanglecao/images/blob/master/add_book.png "")
 
 ![alt text](https://github.com/hoanglecao/images/blob/master/book_list.png "")
 
-# Features
-  - The app has 2 sections:
-      1. 	An ‘Add Book’ section. This section allows the user to enter book details and add them to a book list.
-      2.	A ‘Book List’ section. This section displays a list of books that were added.
-      
+# Link Demo
+  [View Demo](https://hoanglecao.github.io/tarcorp/)
+        
 # Structure app
 ![alt text](https://github.com/hoanglecao/images/blob/master/app_structure1.png "")
 
