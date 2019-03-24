@@ -23,6 +23,7 @@ describe('BookListComponent', () => {
     let fixture : ComponentFixture<BookListComponent>;
     let bookService: BookService;
     let addBookformGroup: FormGroupDirective
+   
     beforeEach(async(() => {
       
         TestBed.configureTestingModule({
@@ -55,17 +56,18 @@ describe('BookListComponent', () => {
         expect(bookListComponent).toBeDefined();
     });
 
-    it('should call getBooks service when init component', () => {   
-        spyOn(bookService,'getBooks'); 
+    it('should call getBooks service when init component', () => {          
+        spyOn(bookService, 'getBooks').and.returnValue({ subscribe: () => {} })
+
         bookListComponent.ngOnInit();   
         expect(bookService.getBooks).toHaveBeenCalled();
     });
 
-    it('should call deleteBook service when listening delete event', () => {   
-        let book = new Book(1,'title','category','description')
-        spyOn(bookService,'deleteBook'); 
+  it('should call deleteBook service when listening delete event', () => {   
+        let book = new Book(1,1,'title','category','description')
+        spyOn(bookService,'deleteBook').and.returnValue({ subscribe: () => {} }); 
         bookListComponent.deleteBookListen(book);   
-        expect(bookService.deleteBook).toHaveBeenCalledWith(book);
+        expect(bookService.deleteBook).toHaveBeenCalled();
     });   
 });
 

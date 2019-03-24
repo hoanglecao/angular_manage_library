@@ -1,11 +1,12 @@
 
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators, FormGroupDirective} from '@angular/forms';
+
 import { NoWhitespaceValidator} from '../../shared/custom-validators/no-whitespace-validator';
 import { ControlErrorStateMatcher} from '../../shared/errors/error-state-matcher';
+
 import { Book } from '../../shared/models/books/book';
-
-
+import { BookService } from '../book.service';
 
 @Component({
     selector: 'add-book',
@@ -17,12 +18,17 @@ export class AddBookComponent implements OnInit {
     book : Book
     addBookForm: FormGroup;
     matcher = new ControlErrorStateMatcher();
+    constructor(private bookService : BookService){}
+
     ngOnInit(){
         this.createForm();
     }
     onSubmit(addBookformGroup: FormGroupDirective) {       
-        this.book = addBookformGroup.value ;
-        addBookformGroup.resetForm();
+        let newBook = addBookformGroup.value ;
+        this.bookService.addBook(newBook).subscribe(data => {
+            this.book= data;
+            addBookformGroup.resetForm();
+        })     
      }
 
      createForm() {

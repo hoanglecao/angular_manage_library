@@ -25,11 +25,18 @@ export class BookListComponent implements OnInit, OnChanges {
    }
 
    ngOnInit(){
-        this.books = this.bookService.getBooks();             
+        this.bookService.getBooks().subscribe(data => {
+            this.books = data
+        });             
     }
 
-    deleteBookListen(book: Book) {
-     this.books = this.bookService.deleteBook(book);
+    deleteBookListen(bookDeleted: Book) {
+     this.bookService.deleteBook(bookDeleted._id).subscribe(() => {    
+      _.remove(this.books, function (book) {
+        return bookDeleted._id == book._id;
+     
+    });
+     });
     };
 
 }

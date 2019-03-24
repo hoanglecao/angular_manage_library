@@ -45,7 +45,7 @@ describe('BookDetailComponent', () => {
       }); 
 
       it('should emit even when deleting book', () => {
-        let book = new Book(1,'title','category','description');
+        let book = new Book(1,1,'title','category','description');
         spyOn(bookDetailComponent.deleteBookEvent, 'emit');
         bookDetailComponent.deleleBook(book);           
         expect(bookDetailComponent.deleteBookEvent.emit).toHaveBeenCalledWith(book);

@@ -2,22 +2,50 @@ import { Injectable} from '@angular/core';
 import * as _ from "lodash";
 
 import { Book } from '../shared/models/books/book';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { ConfigService } from '../config.service';
+import { ErrorHandleService} from '../shared/errors/error-handle.service';
 
 @Injectable()
 export class BookService {
+    uri: String = ''
    
-    private books:Book[] = [{ 'id': 1, 'title': 'A Dog of Flanders', 'category' : 'Drama', 'description': 'A Dog of Flanders is an 1872 novel by English author Marie Louise de la Ramée published with her pseudonym "Ouida". It is about a Flemish boy named Nello and his dog, Patrasche. The story, of English origin, has not been read widely in Belgium'},
-    { 'id': 2, 'title': 'Can You Keep a Secret', 'category' : 'Comedy', 'description': 'Meet Emma Corrigan, a young woman with a huge heart, an irrepressible spirit, and a few little secrets'},
-    { 'id': 3, 'title': 'The Blind Side: Evolution of a Game ', 'category' : 'Sport', 'description': 'When we first meet Michael Oher, he is one of thirteen children by a mother addicted to crack; he does not know his real name, his father, his birthday'}];
+     httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      };
+        
+    constructor(private http: HttpClient, 
+                private configService: ConfigService, 
+                private errorHandleService: ErrorHandleService){
 
-    getBooks(): Book[] {
-        return this.books;
-    };
-
-    deleteBook(book) : Book[] {
-      this.books =  _.remove(this.books, item => {
-              return item.title !== book.title && item.category !== book.category
-        });
-     return this.books;
+     this.uri =  this.configService.apiURI ;
     }
+    
+    addBook (book: Book): Observable<Book> {
+        return this.http.post<Book>(`${this.uri}/books`, book, this.httpOptions)
+                .pipe(
+                    catchError(this.errorHandleService.handleError)
+                )
+                      
+      }
+     
+      getBooks(): Observable<Book[]> {
+        return this.http.get<Book[]>(`${this.uri}/books`, this.httpOptions)
+                .pipe(
+                  catchError(this.errorHandleService.handleError)
+                )
+    }
+
+    
+    deleteBook (id: number): Observable<{}> {
+        const url = `${this.uri}/books/${id}`; 
+        return this.http.delete(url, this.httpOptions)
+          .pipe(
+            catchError(this.errorHandleService.handleError)
+          );
+      }
 }
