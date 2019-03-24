@@ -13,7 +13,13 @@ This project was generated with Angular CLI version 7.3.6.
       - Express
    - Database
       - MongDB (Azure Cosmos DB)
-      
+ 
+ # Link Demo
+  [https://hoanglecao.github.io/tarcorp/](https://hoanglecao.github.io/tarcorp/)
+  
+ # Nodejs API
+  [https://tabcorpapi.azurewebsites.net/books/](https://tabcorpapi.azurewebsites.net/books/)
+  
 # Features
   - The app has 2 sections:
       1. 	An ‘Add Book’ section. This section allows the user to enter book details and add them to a book list.
@@ -23,12 +29,6 @@ This project was generated with Angular CLI version 7.3.6.
 ![alt text](https://github.com/hoanglecao/images/blob/master/add_book.png "") 
 
 ![alt text](https://github.com/hoanglecao/images/blob/master/book_list.png "")
-
-# Link Demo
-  [https://hoanglecao.github.io/tarcorp/](https://hoanglecao.github.io/tarcorp/)
-  
-# Nodejs API
-  [https://tabcorpapi.azurewebsites.net/books/](https://tabcorpapi.azurewebsites.net/books/)
         
 # Structure app
 ![alt text](https://github.com/hoanglecao/images/blob/master/app_structure1.png "")
