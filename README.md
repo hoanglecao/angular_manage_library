@@ -1,6 +1,19 @@
 # Tabcorp
 This project was generated with Angular CLI version 7.3.6.
 
+# Technologies
+   - Client Site
+      - Angular 7.2.0
+      - Angular material 7.3.5
+      - Boostrap 4.3.1
+      - Lodash 4.14.123
+      - Typescript 3.2.2
+   - Server Side
+      - NodeJs
+      - Express
+   - Database
+      - MongDB (Azure Cosmos DB)
+      
 # Features
   - The app has 2 sections:
       1. 	An ‘Add Book’ section. This section allows the user to enter book details and add them to a book list.
@@ -22,19 +35,6 @@ This project was generated with Angular CLI version 7.3.6.
 
 # Structure component
 ![alt text](https://github.com/hoanglecao/images/blob/master/component-structure.png "")
-
-# Technologies
-   - Client Site
-      - Angular 7.2.0
-      - Angular material 7.3.5
-      - Boostrap 4.3.1
-      - Lodash 4.14.123
-      - Typescript 3.2.2
-   - Server Side
-      - NodeJs
-      - Express
-   - Database
-      - MongDB (Azure Cosmos DB)
   
 # Development server
 Run ng serve for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
