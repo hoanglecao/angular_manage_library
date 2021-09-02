@@ -1,0 +1,9 @@
+# Git folder
+.git
+
+# Code converage
+.nyc_output
+
+# IDEs
+.vscode
+.idea

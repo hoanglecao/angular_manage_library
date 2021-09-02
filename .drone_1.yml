@@ -1,0 +1,433 @@
+---
+kind: pipeline
+name: service
+when:
+  event: [push, tag]
+
+steps:
+  - name: install
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service
+      - npm ci
+    when:
+      event: [push, tag]
+  - name: codegen
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service
+      - npm run codegen
+    when:
+      event: [push, tag]
+    depends_on:
+      - install
+  - name: build
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service
+      - npm run build:docker
+    when:
+      event: [push, tag]
+    depends_on:
+      - codegen
+  - name: test
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service
+      - npm run lint
+      - npm run test
+    when:
+      event: [push, tag]
+    depends_on:
+      - build
+  - name: prune
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service
+      - npm prune --production
+    when:
+      event: [push, tag]
+    depends_on:
+      - test
+  - name: test-sonar
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    environment:
+      SONAR_LOGIN:
+        from_secret: sonar_token
+    commands:
+      - cd service
+      - npm install -g sonarqube-scanner
+      - npm run sonar
+    when:
+      event: [push, tag]
+      branch:
+      - develop
+      - master
+    depends_on:
+      - test
+  - name: version-commit
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service/client
+      - PKGVERSION=`node -e "console.log(require('./package.json').version)"`
+      - echo $PKGVERSION
+      - npm --no-git-tag-version version $PKGVERSION-${DRONE_BUILD_NUMBER} || true
+    when:
+      event: push
+    depends_on:
+      - test
+  - name: version-tag
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd service/client
+      - PKGVERSION=`node -e "console.log(require('./package.json').version)"`
+      - echo $PKGVERSION
+      - npm --no-git-tag-version version $PKGVERSION || true
+    when:
+      event: tag
+    depends_on:
+      - test
+  - name: npm-commit
+    image: plugins/npm
+    settings:
+      registry: http://artifactory.tattsgroup.com/artifactory/api/npm/gaming-maxsys-infrastructure
+      username:
+        from_secret: npm_username
+      password:
+        from_secret: npm_password
+      email:
+        from_secret: npm_email
+      folder: service/client
+    when:
+      event: push
+    depends_on:
+      - version-commit
+  - name: npm-tag
+    image: plugins/npm
+    settings:
+      registry: http://artifactory.tattsgroup.com/artifactory/api/npm/gaming-maxsys-infrastructure
+      username:
+        from_secret: npm_username
+      password:
+        from_secret: npm_password
+      email:
+        from_secret: npm_email
+      folder: service/client
+    when:
+      event: tag
+    depends_on:
+      - version-tag
+  - name: docker-commit
+    image: plugins/docker
+    settings:
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/services/quickchange
+      dockerfile: ./service/Dockerfile
+      context: ./service
+      tags:
+        - ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+    when:
+      event: push
+      branch:
+        exclude:
+          - develop
+    depends_on:
+      - prune
+  - name: docker-onbuild
+    image: plugins/docker
+    settings:
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/services/quickchange
+      dockerfile: ./service/Dockerfile
+      context: ./service
+      tags:
+        - onbuild
+    when:
+      event: push
+      branch: develop
+    depends_on:
+      - prune
+  - name: docker-tag
+    image: plugins/docker
+    settings:
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/services/quickchange
+      dockerfile: ./service/Dockerfile
+      context: ./service
+      tags:
+        - ${DRONE_TAG}
+    when:
+      event: tag
+    depends_on:
+      - prune
+  - name: aqua_security_scan
+    image: 235323814711.dkr.ecr.ap-southeast-2.amazonaws.com/maxsys2-drone-plugins/aquasec-scan
+    network_mode: host
+    environment:
+      DOCKER_HOST: 'tcp://${DRONE_MACHINE}:2376'
+      DOCKER_IMAGE_NAME: services/quickchange
+      DOCKER_IMAGE_TAG: ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+      SCAN_REGISTRY: gaming-docker-maxsys.docker.tattsgroup.com
+      SCAN_OUTPUT_PATH: /tmp
+      ANSIBLE_VERBOSITY: 1
+      SCAN_POLICIES: Default
+      AQUA_USERNAME:
+        from_secret: aqua_username
+      AQUA_PASSWORD:
+        from_secret: aqua_password
+      URI_USERNAME:
+        from_secret: docker_username
+      URI_PASSWORD:
+        from_secret: docker_password
+    when:
+      event:
+      - push
+      branch:
+        exclude:
+        - master
+        - develop
+    depends_on:
+      - docker-commit
+
+---
+kind: pipeline
+name: site
+when:
+  event: [push, tag]
+
+steps:
+  - name: install
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    pull: true
+    commands:
+      - cd site
+      - npm ci
+    when:
+      event: [push, tag]
+  - name: codegen
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    pull: true
+    commands:
+      - cd site
+      - npm run codegen
+    depends_on:
+      - install
+    when:
+      event: [push, tag]
+  - name: build
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    pull: true
+    commands:
+      - cd site
+      - npm run build:prod
+      - npx gaming-maxsys-platform lint .
+    depends_on:
+      - codegen
+    when:
+      event: [push, tag]
+  - name: test-client
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    pull: true
+    commands:
+      - cd site
+      - npm run lint:client
+      - npm run client-test:drone
+    depends_on:
+      - build
+    when:
+      event: [push, tag]
+  - name: test-sonar-client
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    environment:
+      SONAR_LOGIN:
+        from_secret: sonar_token
+    commands:
+      - cd site
+      - npm install -g sonarqube-scanner
+      - npm run sonar:client
+    depends_on:
+      - test-client
+    when:
+      event: [push, tag]
+      branch:
+      - develop
+      - master
+  - name: test-server
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    pull: true
+    commands:
+      - cd site
+      - npm run server-test:drone
+    depends_on:
+      - test-client
+    when:
+      event: [push, tag]
+  - name: prune
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    commands:
+      - cd site
+      - npm prune --production
+    when:
+      event: [push, tag]
+    depends_on:
+      - test-server
+  - name: test-sonar-server
+    image: gaming-docker-maxsys.docker.tattsgroup.com/maxsys2/node14-builder:2.0.1
+    environment:
+      SONAR_LOGIN:
+        from_secret: sonar_token
+    commands:
+      - cd site
+      - npm install -g sonarqube-scanner
+      - npm run sonar:edge
+    depends_on:
+      - test-server
+      - test-sonar-client # only one scan can run at a time
+    when:
+      event: [push, tag]
+      branch:
+      - develop
+      - master
+  - name: docker-commit
+    image: plugins/docker
+    settings:
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/sites/quickchange
+      dockerfile: ./site/Dockerfile
+      context: ./site
+      tags:
+        - ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+    when:
+      event: push
+      branch:
+        exclude: develop
+    depends_on:
+      - prune
+  - name: docker-onbuild
+    image: plugins/docker
+    settings:
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/sites/quickchange
+      dockerfile: ./site/Dockerfile
+      context: ./site
+      tags:
+        - onbuild
+    when:
+      event: push
+      branch: develop
+    depends_on:
+      - prune
+  - name: docker-tag
+    image: plugins/docker
+    settings:
+      group: docker
+      registry: gaming-docker-maxsys.docker.tattsgroup.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: gaming-docker-maxsys.docker.tattsgroup.com/sites/quickchange
+      dockerfile: ./site/Dockerfile
+      context: ./site
+      tags:
+        - ${DRONE_TAG}
+    when:
+      event: tag
+    depends_on:
+      - prune
+  - name: aqua_security_scan
+    image: 235323814711.dkr.ecr.ap-southeast-2.amazonaws.com/maxsys2-drone-plugins/aquasec-scan
+    network_mode: host
+    environment:
+      DOCKER_HOST: 'tcp://${DRONE_MACHINE}:2376'
+      DOCKER_IMAGE_NAME: sites/quickchange
+      DOCKER_IMAGE_TAG: ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+      SCAN_REGISTRY: gaming-docker-maxsys.docker.tattsgroup.com
+      SCAN_OUTPUT_PATH: /tmp
+      ANSIBLE_VERBOSITY: 1
+      SCAN_POLICIES: Default
+      AQUA_USERNAME:
+        from_secret: aqua_username
+      AQUA_PASSWORD:
+        from_secret: aqua_password
+      URI_USERNAME:
+        from_secret: docker_username
+      URI_PASSWORD:
+        from_secret: docker_password
+    when:
+      event:
+      - push
+      branch:
+        exclude:
+        - master
+        - develop
+    depends_on:
+      - docker-commit
+---
+kind: secret
+name: docker_username
+get:
+  path: maxsys2/shr/artifactory/docker
+  name: username
+---
+kind: secret
+name: docker_password
+get:
+  path: maxsys2/shr/artifactory/docker
+  name: password
+---
+kind: secret
+name: npm_username
+get:
+  path: maxsys2/shr/artifactory/npm
+  name: username
+---
+kind: secret
+name: npm_password
+get:
+  path: maxsys2/shr/artifactory/npm
+  name: password
+---
+kind: secret
+name: npm_email
+get:
+  path: maxsys2/shr/artifactory/npm
+  name: email
+---
+kind: secret
+name: aqua_username
+get:
+  path: maxsys2/shr/aquasec
+  name: username
+---
+kind: secret
+name: aqua_password
+get:
+  path: maxsys2/shr/aquasec
+  name: password
+---
+kind: secret
+name: sonar_token
+get:
+  path: maxsys2/shr/sonar
+  name: token
